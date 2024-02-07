@@ -265,12 +265,13 @@ export class SendGridService extends NotificationService {
       event,
       data,
       attachmentGenerator
-    ) 
+    )
 
     const sendOptions: SendGrid.MailDataRequired = {
       templateId: templateId,
       from: this.options_.from,
       to: data.email,
+      bcc: this.options_.orderPlacedBcc && event === "order.placed" ? this.options_.orderPlacedBcc : undefined,
       dynamicTemplateData: data,
     }
     
@@ -278,6 +279,7 @@ export class SendGridService extends NotificationService {
       template_id: templateId,
       from: this.options_.from,
       to: data.email,
+      bcc: this.options_.orderPlacedBcc && event === "order.placed" ? this.options_.orderPlacedBcc : undefined,
       dynamic_template_data: data,
       has_attachments: attachments?.length > 0,
     }
@@ -485,7 +487,7 @@ export class SendGridService extends NotificationService {
       locale,
       has_discounts: order.discounts.length,
       has_gift_cards: order.gift_cards.length,
-      date: order.created_at.toDateString(),
+      date: order?.created_at?.toDateString(),
       items,
       discounts,
       subtotal: `${this.humanPrice_(

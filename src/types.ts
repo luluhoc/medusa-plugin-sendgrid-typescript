@@ -1,3 +1,5 @@
+import {EmailData} from '@sendgrid/helpers/classes/email-address'
+
 /** @exampledata https://docs.medusajs.com/plugins/notifications/sendgrid */
 export interface Templates {
   /** Template to be sent to the customer when they place a new order. */
@@ -21,6 +23,8 @@ export interface PluginOptions {
   api_key: string
   from: string
   templates: Templates;
+  /** BCC email address to send to when an order is placed. */
+  orderPlacedBcc?: EmailData|EmailData[]
   /** locale as key example de-DE */
   localization: {
     [key: string]: Templates;
