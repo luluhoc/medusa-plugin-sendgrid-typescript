@@ -17,6 +17,8 @@ export interface Templates {
   user_password_reset_template?: string
   medusa_restock_template?: string
   order_refund_created_template?: string
+  // add any other templates here
+  [key: string]: string | undefined
 }
 
 export interface PluginOptions {

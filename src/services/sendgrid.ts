@@ -209,40 +209,15 @@ export class SendGridService extends NotificationService {
   }
 
   getTemplateId(event: string) {
-    switch (event) {
-      case "order.return_requested":
-        return this.options_?.templates?.order_return_requested_template
-      case "swap.shipment_created":
-        return this.options_?.templates?.swap_shipment_created_template
-      case "claim.shipment_created":
-        return this.options_?.templates?.claim_shipment_created_template
-      case "order.items_returned":
-        return this.options_?.templates?.order_items_returned_template
-      case "swap.received":
-        return this.options_?.templates?.swap_received_template
-      case "swap.created":
-        return this.options_?.templates?.swap_created_template
-      case "gift_card.created":
-        return this.options_?.templates?.gift_card_created_template
-      case "order.gift_card_created":
-        return this.options_?.templates?.gift_card_created_template
-      case "order.placed":
-        return this.options_?.templates?.order_placed_template
-      case "order.shipment_created":
-        return this.options_?.templates?.order_shipped_template
-      case "order.canceled":
-        return this.options_?.templates?.order_canceled_template
-      case "user.password_reset":
-        return this.options_?.templates?.user_password_reset_template
-      case "customer.password_reset":
-        return this.options_?.templates?.customer_password_reset_template
-      case "restock-notification.restocked":
-        return this.options_?.templates?.medusa_restock_template
-      case "order.refund_created":
-        return this.options_?.templates?.order_refund_created_template
-      default:
-        return null
-    }
+    const templates = Object.keys(this.options_ ?? {})
+    const normalizedEvent = event.toLowerCase().replaceAll(".", "_")
+    const key = templates.find((template) => {
+      return (
+        normalizedEvent === template ||
+        `${normalizedEvent}_template` === template
+      )
+    })
+    return this.options_[key ?? ""] ?? key
   }
 
   async sendNotification(event: string, eventData: EventData, attachmentGenerator?: any) {
