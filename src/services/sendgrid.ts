@@ -163,7 +163,7 @@ export class SendGridService extends NotificationService {
       case "order.refund_created":
         return this.orderRefundCreatedData(eventData)
       default:
-        return {}
+        return eventData
     }
   }
 
@@ -209,7 +209,7 @@ export class SendGridService extends NotificationService {
   }
 
   getTemplateId(event: string) {
-    const templates = Object.keys(this.options_ ?? {})
+    const templates = Object.keys(this.options_.templates ?? {})
     const normalizedEvent = event.toLowerCase().replaceAll(".", "_")
     const key = templates.find((template) => {
       return (
@@ -217,7 +217,8 @@ export class SendGridService extends NotificationService {
         `${normalizedEvent}_template` === template
       )
     })
-    return this.options_[key ?? ""] ?? key
+    // @ts-expect-error - wrong types in options_
+    return this.options_.templates[key] ?? key
   }
 
   async sendNotification(event: string, eventData: EventData, attachmentGenerator?: any) {
@@ -226,7 +227,8 @@ export class SendGridService extends NotificationService {
     let templateId = this.getTemplateId(event)
 
     if (data.locale) {
-      templateId = this.getLocalizedTemplateId(event, data.locale) || templateId
+      const localizedTemplateId = this.getLocalizedTemplateId(event, data.locale)
+      templateId = localizedTemplateId || templateId
     }
 
     if (!templateId) {
