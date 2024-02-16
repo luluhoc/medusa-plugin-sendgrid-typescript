@@ -18,6 +18,7 @@ Extra features:
 
 - BCC to a specific email addresses when order is placed if you want to send yourself the order and for example TrustPilot
 - Typescript support
+- Custom subject with dynamic data
 
 ---
 
