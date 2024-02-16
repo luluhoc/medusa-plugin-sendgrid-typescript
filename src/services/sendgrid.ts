@@ -167,40 +167,40 @@ export class SendGridService extends NotificationService {
     }
   }
 
-  getLocalizedTemplateId(event: string, locale: string) {
+  getLocalizedTemplateId(event: string, locale: string, subject?: boolean) {
     if (this.options_.localization && this.options_.localization[locale]) {
       const map = this.options_.localization[locale]
       switch (event) {
         case "order.return_requested":
-          return map.order_return_requested_template
+          return map.order_return_requested_template?.[subject ? "subject": "id"]
         case "swap.shipment_created":
-          return map.swap_shipment_created_template
+          return map.swap_shipment_created_template?.[subject ? "subject": "id"]
         case "claim.shipment_created":
-          return map.claim_shipment_created_template
+          return map.claim_shipment_created_template?.[subject ? "subject": "id"]
         case "order.items_returned":
-          return map.order_items_returned_template
+          return map.order_items_returned_template?.[subject ? "subject": "id"]
         case "swap.received":
-          return map.swap_received_template
+          return map.swap_received_template?.[subject ? "subject": "id"]
         case "swap.created":
-          return map.swap_created_template
+          return map.swap_created_template?.[subject ? "subject": "id"]
         case "gift_card.created":
-          return map.gift_card_created_template
+          return map.gift_card_created_template?.[subject ? "subject": "id"]
         case "order.gift_card_created":
-          return map.gift_card_created_template
+          return map.gift_card_created_template?.[subject ? "subject": "id"]
         case "order.placed":
-          return map.order_placed_template
+          return map.order_placed_template?.[subject ? "subject": "id"]
         case "order.shipment_created":
-          return map.order_shipped_template
+          return map.order_shipped_template?.[subject ? "subject": "id"]
         case "order.canceled":
-          return map.order_canceled_template
+          return map.order_canceled_template?.[subject ? "subject": "id"]
         case "user.password_reset":
-          return map.user_password_reset_template
+          return map.user_password_reset_template?.[subject ? "subject": "id"]
         case "customer.password_reset":
-          return map.customer_password_reset_template
+          return map.customer_password_reset_template?.[subject ? "subject": "id"]
         case "restock-notification.restocked":
-          return map.medusa_restock_template
+          return map.medusa_restock_template?.[subject ? "subject": "id"]
         case "order.refund_created":
-          return map.order_refund_created_template
+          return map.order_refund_created_template?.[subject ? "subject": "id"]
         default:
           return null
       }
@@ -208,7 +208,7 @@ export class SendGridService extends NotificationService {
     return null
   }
 
-  getTemplateId(event: string) {
+  getTemplateId(event: string, subject?: boolean) {
     const templates = Object.keys(this.options_.templates ?? {})
     const normalizedEvent = event.toLowerCase().replaceAll(".", "_")
     const key = templates.find((template) => {
@@ -218,17 +218,35 @@ export class SendGridService extends NotificationService {
       )
     })
     // @ts-expect-error - wrong types in options_
-    return this.options_.templates[key] ?? key
+    return this.options_.templates[key]?.[subject ? "subject": "id"]
   }
+
+  getSubjectVariable(template: string) {
+    // i have a template string {} extract variable
+    const regex = /{([^}]+)}/g
+    const matches = template.matchAll(regex)
+    const variables: string[] = []
+    for (const match of matches) {
+      variables.push(match[1])
+    }
+    return variables
+  }
+  
 
   async sendNotification(event: string, eventData: EventData, attachmentGenerator?: any) {
     const data = await this.fetchData(event, eventData, attachmentGenerator)
 
     let templateId = this.getTemplateId(event)
 
+
+
+    let subject = this.getTemplateId(event, true)
+    
     if (data.locale) {
       const localizedTemplateId = this.getLocalizedTemplateId(event, data.locale)
+      const localizedSubject = this.getLocalizedTemplateId(event, data.locale, true)
       templateId = localizedTemplateId || templateId
+      subject = localizedSubject || subject
     }
 
     if (!templateId) {
@@ -236,6 +254,18 @@ export class SendGridService extends NotificationService {
         MedusaError.Types.INVALID_DATA,
         `Sendgrid service: No template was set for event: ${event}`
       )
+    }
+
+    if (subject) {
+      let variables = this.getSubjectVariable(subject)
+      if (variables.length > 0) {
+        variables.forEach((variable) => {
+          if (data[variable]) {
+            subject = subject.replace(`{${variable}}`, data[variable])
+          }
+      })
+      }
+      data.subject = subject
     }
 
     const attachments = await this.fetchAttachments(
