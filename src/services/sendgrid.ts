@@ -238,8 +238,6 @@ export class SendGridService extends NotificationService {
 
     let templateId = this.getTemplateId(event)
 
-
-
     let subject = this.getTemplateId(event, true)
     
     if (data.locale) {
@@ -260,6 +258,29 @@ export class SendGridService extends NotificationService {
       let variables = this.getSubjectVariable(subject)
       if (variables.length > 0) {
         variables.forEach((variable) => {
+          const isNested = variable.includes(".")
+          if (isNested) {
+            const [first, ...rest] = variable.split(".")
+            if (!data[first]) {
+              this.logger_.warn(`Sendgrid service: No data was set for variable: ${variable}`)
+            }
+            if (data[first]) {
+              let nested = data[first]
+              rest.forEach((r) => {
+                if (!nested[r]) {
+                  this.logger_.warn(`Sendgrid service: No data was set for variable: ${variable}`)
+                }
+                if (nested[r]) {
+                  nested = nested[r]
+                }
+              })
+              subject = subject.replace(`{${variable}}`, nested)
+            }
+          }
+
+          if (!data[variable]) {
+            this.logger_.warn(`Sendgrid service: No data was set for variable: ${variable}`)
+          }
           if (data[variable]) {
             subject = subject.replace(`{${variable}}`, data[variable])
           }
