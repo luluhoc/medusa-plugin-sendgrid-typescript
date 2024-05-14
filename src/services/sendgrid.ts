@@ -190,7 +190,7 @@ export class SendGridService extends NotificationService {
         case "order.placed":
           return map.order_placed_template?.[subject ? "subject": "id"]
         case "order.shipment_created":
-          return map.order_shipped_template?.[subject ? "subject": "id"]
+          return map.order_shipment_created_template?.[subject ? "subject": "id"]
         case "order.canceled":
           return map.order_canceled_template?.[subject ? "subject": "id"]
         case "user.password_reset":
