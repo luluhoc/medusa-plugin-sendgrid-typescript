@@ -64,7 +64,7 @@ Extra features:
         templates: {
           order_placed_template: {
             id: process.env.SENDGRID_ORDER_PLACED_ID,
-            // You can add dynamic data to the template by using #{variable_name}
+            // You can add dynamic data to the template by using {variable_name}
             subject: "Thank you for your order #{display_id}!",
           },
         },
