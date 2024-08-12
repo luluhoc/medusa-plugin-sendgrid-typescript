@@ -31,13 +31,13 @@ export interface Templates {
 
 export interface PluginOptions {
   api_key: string
-  from: {name?: string, email: string } | string
-  templates: Templates;
+  from: { name?: string, email: string } | string
+  templates: Templates
   /** BCC email address to send to when an order is placed. */
   orderPlacedBcc?: EmailData|EmailData[]
   /** locale as key example de-DE */
   localization: {
-    [key: string]: Templates;
+    [key: string]: Templates
   }
 }
 
