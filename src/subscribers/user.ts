@@ -1,10 +1,9 @@
 import { EventBusService, SubscriberArgs, SubscriberConfig } from "@medusajs/medusa"
 import SendGridService from "../services/sendgrid"
-import { EventData } from "../types/generic"
 
 export default async function userHandler({ 
   data, eventName, container, pluginOptions, 
-}: SubscriberArgs<EventData>) {
+}: SubscriberArgs<{email: string, token: string}>) {
   const sendGridService: SendGridService = container.resolve(
     "sendgridService"
   )

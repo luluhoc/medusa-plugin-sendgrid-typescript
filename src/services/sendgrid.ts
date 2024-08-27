@@ -2,7 +2,7 @@ import SendGrid from "@sendgrid/mail"
 import { humanizeAmount, zeroDecimalCurrencies } from "medusa-core-utils"
 import { NotificationService } from "medusa-interfaces"
 import { MedusaError } from "@medusajs/utils"
-import { AttachmentsArray, FromFullFilementService, NewLineItem, EventData, SendGridData } from "../types/generic"
+import { AttachmentsArray, FromFullFilementService, NewLineItem, SendGridData } from "../types/generic"
 import { PluginOptions } from "../types"
 import type { CartService, ClaimService, FulfillmentProviderService, 
   GiftCardService, LineItem, LineItemService, Logger, Order,  OrderService, ProductVariantService, Return, ReturnItem, ReturnService, 
@@ -127,7 +127,7 @@ export class SendGridService extends NotificationService {
 
   
 
-  async fetchData(event: string, eventData: EventData, 
+  async fetchData(event: string, eventData: Record<string, unknown>, 
     attachmentGenerator: any): Promise<Record<any, any>> {
     switch (event) {
       case "order.return_requested":
@@ -233,7 +233,7 @@ export class SendGridService extends NotificationService {
   }
   
 
-  async sendNotification(event: string, eventData: EventData, attachmentGenerator?: any) {
+  async sendNotification(event: string, eventData: Record<string, unknown>, attachmentGenerator?: any) {
     const data = await this.fetchData(event, eventData, attachmentGenerator)
 
     let templateId = this.getTemplateId(event)
@@ -379,7 +379,7 @@ export class SendGridService extends NotificationService {
     return email;
   }
 
-  async orderShipmentCreatedData({ id, fulfillment_id }: EventData, attachmentGenerator?: any) {
+  async orderShipmentCreatedData({ id, fulfillment_id }: Record<string, unknown>, attachmentGenerator?: any) {
     const order = await this.orderService_.retrieve(id, {
       select: [
         "shipping_total",
@@ -431,7 +431,7 @@ export class SendGridService extends NotificationService {
     }
   }
 
-  async orderCanceledData({ id }: EventData) {
+  async orderCanceledData({ id }: Record<string, unknown>) {
     const order = await this.orderService_.retrieve(id, {
       select: [
         "shipping_total",
@@ -539,7 +539,7 @@ export class SendGridService extends NotificationService {
     }
   }
 
-  async orderPlacedData({ id }: EventData) {
+  async orderPlacedData({ id }: Record<string, unknown>) {
     const order = await this.orderService_.retrieve(id, {
       select: [
         "shipping_total",
@@ -687,7 +687,7 @@ export class SendGridService extends NotificationService {
     }
   }
 
-  async gcCreatedData({ id }: EventData) {
+  async gcCreatedData({ id }: Record<string, unknown>) {
     const giftCard = await this.giftCardService_.retrieve(id, {
       relations: ["region", "order"],
     })
@@ -712,7 +712,7 @@ export class SendGridService extends NotificationService {
     }
   }
 
-  async returnRequestedData({ id, return_id }: EventData) {
+  async returnRequestedData({ id, return_id }: Record<string, unknown>) {
     // Fetch the return request
     if (!return_id) {
       throw new MedusaError(
@@ -858,7 +858,7 @@ export class SendGridService extends NotificationService {
     }
   }
 
-  async swapReceivedData({ id }: EventData) {
+  async swapReceivedData({ id }: Record<string, unknown>) {
     const store = await this.storeService_.retrieve()
 
     const swap = await this.swapService_.retrieve(id, {
@@ -1000,7 +1000,7 @@ export class SendGridService extends NotificationService {
     }
   }
 
-  async swapCreatedData({ id }: EventData) {
+  async swapCreatedData({ id }: Record<string, unknown>) {
     const store = await this.storeService_.retrieve()
     const swap = await this.swapService_.retrieve(id, {
       relations: [
@@ -1147,11 +1147,11 @@ export class SendGridService extends NotificationService {
     }
   }
 
-  async itemsReturnedData(data: EventData) {
+  async itemsReturnedData(data: Record<string, unknown>) {
     return this.returnRequestedData(data)
   }
 
-  async swapShipmentCreatedData({ id, fulfillment_id }: EventData) {
+  async swapShipmentCreatedData({ id, fulfillment_id }: Record<string, unknown>) {
     const swap = await this.swapService_.retrieve(id, {
       relations: [
         "shipping_address",
@@ -1310,7 +1310,7 @@ export class SendGridService extends NotificationService {
     }
   }
 
-  async claimShipmentCreatedData({ id, fulfillment_id }: EventData) {
+  async claimShipmentCreatedData({ id, fulfillment_id }: Record<string, unknown>) {
     const claim = await this.claimService_.retrieve(id, {
       relations: [
         "order.items.variant.product.profiles",
@@ -1341,7 +1341,7 @@ export class SendGridService extends NotificationService {
     }
   }
 
-  async restockNotificationData({ variant_id, emails }: EventData) {
+  async restockNotificationData({ variant_id, emails }: Record<string, unknown>) {
     if (!variant_id) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -1368,15 +1368,15 @@ export class SendGridService extends NotificationService {
     }
   }
 
-  userPasswordResetData(data: EventData) {
+  userPasswordResetData(data: Record<string, unknown>) {
     return data
   }
 
-  customerPasswordResetData(data: EventData) {
+  customerPasswordResetData(data: Record<string, unknown>) {
     return data
   }
 
-  async orderRefundCreatedData({ id, refund_id }: EventData) {
+  async orderRefundCreatedData({ id, refund_id }: Record<string, unknown>) {
     const order = await this.orderService_.retrieveWithTotals(id, {
       relations: ["refunds", "items"],
     })
