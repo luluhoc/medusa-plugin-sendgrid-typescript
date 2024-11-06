@@ -74,7 +74,9 @@ describe("SendGridService", () => {
       {
         api_key: "SG.test",
         templates: {
-          order_placed_template: "lol",
+          order_placed_template: {
+            id: "lol"
+          },
         },
       }
     )
@@ -103,7 +105,9 @@ describe("SendGridService", () => {
       {
         api_key: "SG.test",
         templates: {
-          order_placed_template: "lol",
+          order_placed_template: {
+            id: "lol"
+          },
         },
       }
     )
@@ -138,7 +142,8 @@ describe("SendGridService", () => {
       { orderService: orderServiceMock, totalsService },
       {
         api_key: "SG.test",
-      }
+        templates: {},
+      },
     )
 
     try {
@@ -184,9 +189,16 @@ describe("SendGridService", () => {
       },
       {
         api_key: "SG.test",
+        templates: {
+          order_placed_template: {
+            id: "lol"
+          },
+        },
         localization: {
           "de-DE": {
-            order_placed_template: "lol",
+            order_placed_template: {
+              id: "lol"
+            },
           },
         },
       }
