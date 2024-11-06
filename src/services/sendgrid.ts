@@ -382,6 +382,13 @@ export class SendGridService extends AbstractNotificationService {
   }
 
   async orderShipmentCreatedData({ id, fulfillment_id }: Record<string, unknown>, attachmentGenerator?: any) {
+    if (!id || typeof id !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Sendgrid service: No order_id was set for event: order.shipment_created
+        `
+      )
+    }
     const order = await this.orderService_.retrieve(id, {
       select: [
         "shipping_total",
@@ -434,6 +441,13 @@ export class SendGridService extends AbstractNotificationService {
   }
 
   async orderCanceledData({ id }: Record<string, unknown>) {
+    if (!id || typeof id !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Sendgrid service: No order_id was set for event: order.shipment_created
+        `
+      )
+    }
     const order = await this.orderService_.retrieve(id, {
       select: [
         "shipping_total",
@@ -542,6 +556,13 @@ export class SendGridService extends AbstractNotificationService {
   }
 
   async orderPlacedData({ id }: Record<string, unknown>) {
+    if (!id || typeof id !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Sendgrid service: No order_id was set for event: order.shipment_created
+        `
+      )
+    }
     const order = await this.orderService_.retrieve(id, {
       select: [
         "shipping_total",
@@ -690,6 +711,13 @@ export class SendGridService extends AbstractNotificationService {
   }
 
   async gcCreatedData({ id }: Record<string, unknown>) {
+    if (!id || typeof id !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Sendgrid service: No order_id was set for event: order.shipment_created
+        `
+      )
+    }
     const giftCard = await this.giftCardService_.retrieve(id, {
       relations: ["region", "order"],
     })
@@ -716,7 +744,7 @@ export class SendGridService extends AbstractNotificationService {
 
   async returnRequestedData({ id, return_id }: Record<string, unknown>) {
     // Fetch the return request
-    if (!return_id) {
+    if (!return_id || typeof return_id !== "string") {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Sendgrid service: No return_id was set for event: order.return_requested`
@@ -740,7 +768,13 @@ export class SendGridService extends AbstractNotificationService {
         relations: ["tax_lines", "variant", "variant.product.profiles"],
       }
     )
-
+    if (!id || typeof id !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Sendgrid service: No order_id was set for event: order.shipment_created
+        `
+      )
+    }
     // Fetch the order
     const order = await this.orderService_.retrieve(id, {
       select: ["total"],
@@ -861,6 +895,13 @@ export class SendGridService extends AbstractNotificationService {
   }
 
   async swapReceivedData({ id }: Record<string, unknown>) {
+    if (!id || typeof id !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Sendgrid service: No order_id was set for event: order.shipment_created
+        `
+      )
+    }
     const store = await this.storeService_.retrieve()
 
     const swap = await this.swapService_.retrieve(id, {
@@ -1003,6 +1044,13 @@ export class SendGridService extends AbstractNotificationService {
   }
 
   async swapCreatedData({ id }: Record<string, unknown>) {
+    if (!id || typeof id !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Sendgrid service: No order_id was set for event: order.shipment_created
+        `
+      )
+    }
     const store = await this.storeService_.retrieve()
     const swap = await this.swapService_.retrieve(id, {
       relations: [
@@ -1154,6 +1202,13 @@ export class SendGridService extends AbstractNotificationService {
   }
 
   async swapShipmentCreatedData({ id, fulfillment_id }: Record<string, unknown>) {
+    if (!id || typeof id !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Sendgrid service: No order_id was set for event: order.shipment_created
+        `
+      )
+    }
     const swap = await this.swapService_.retrieve(id, {
       relations: [
         "shipping_address",
@@ -1313,6 +1368,13 @@ export class SendGridService extends AbstractNotificationService {
   }
 
   async claimShipmentCreatedData({ id, fulfillment_id }: Record<string, unknown>) {
+    if (!id || typeof id !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Sendgrid service: No order_id was set for event: order.shipment_created
+        `
+      )
+    }
     const claim = await this.claimService_.retrieve(id, {
       relations: [
         "order.items.variant.product.profiles",
@@ -1344,7 +1406,7 @@ export class SendGridService extends AbstractNotificationService {
   }
 
   async restockNotificationData({ variant_id, emails }: Record<string, unknown>) {
-    if (!variant_id) {
+    if (!variant_id || typeof variant_id !== "string") {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Sendgrid service: No variant_id was set for event: restock-notification.restocked`
@@ -1379,6 +1441,13 @@ export class SendGridService extends AbstractNotificationService {
   }
 
   async orderRefundCreatedData({ id, refund_id }: Record<string, unknown>) {
+    if (!id || typeof id !== "string") {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Sendgrid service: No order_id was set for event: order.shipment_created
+        `
+      )
+    }
     const order = await this.orderService_.retrieveWithTotals(id, {
       relations: ["refunds", "items"],
     })

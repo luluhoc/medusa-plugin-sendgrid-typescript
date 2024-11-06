@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-sendgrid-typescript",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "SendGrid transactional emails typescript",
   "repository": {
     "type": "git",
@@ -13,7 +13,7 @@
   "files": [
     "dist"
   ],
-  "author": "Lucjan Grzesik | Oliver Juhl ",
+  "author": "Lucjan Grzesik | Oliver Juhl",
   "license": "MIT",
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.18.6",
