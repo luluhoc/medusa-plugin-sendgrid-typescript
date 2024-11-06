@@ -1,14 +1,15 @@
 import SendGrid from "@sendgrid/mail"
 import { humanizeAmount, zeroDecimalCurrencies } from "medusa-core-utils"
-import { NotificationService } from "medusa-interfaces"
 import { MedusaError } from "@medusajs/utils"
 import { AttachmentsArray, FromFullFilementService, NewLineItem, SendGridData } from "../types/generic"
 import { PluginOptions } from "../types"
-import type { CartService, ClaimService, FulfillmentProviderService, 
-  GiftCardService, LineItem, LineItemService, Logger, Order,  OrderService, ProductVariantService, Return, ReturnItem, ReturnService, 
-  StoreService, SwapService, TotalsService } from "@medusajs/medusa"
+import {
+  AbstractNotificationService, CartService, ClaimService, FulfillmentProviderService,
+  GiftCardService, LineItem, LineItemService, Logger, Order, OrderService, ProductVariantService, Return, ReturnItem, ReturnService,
+  StoreService, SwapService, TotalsService
+} from "@medusajs/medusa"
 
-export class SendGridService extends NotificationService {
+export class SendGridService extends AbstractNotificationService {
   static identifier = "sendgrid"
 
   options_: PluginOptions
@@ -58,7 +59,8 @@ export class SendGridService extends NotificationService {
     },
     options: PluginOptions
   ) {
-    super()
+    // @ts-expect-error prefer-rest-params
+    super(...arguments)
 
     this.options_ = options
 
@@ -370,7 +372,7 @@ export class SendGridService extends NotificationService {
       .then(() => "sent")
       .catch(() => "failed")
 
-    return { to: sendOptions.to, status, data: sendOptions }
+    return { to: sendOptions.to as string, status, data: sendOptions as unknown as Record<string, unknown> }
   }
 
 
