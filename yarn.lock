@@ -1645,21 +1645,22 @@
     awilix "^8.0.0"
     graphql "^16.6.0"
 
-"@medusajs/types@^1.11.11", "@medusajs/types@^1.11.9":
-  version "1.11.11"
-  resolved "https://registry.yarnpkg.com/@medusajs/types/-/types-1.11.11.tgz#b6ec77dfec0e62e1f2612e32d73089af830246ef"
-  integrity sha512-uvrSvAjLaIsF7PTQezR9T/CIhn5gOJZYwZEL0a4sqnbDDzXNbwBMvTGkRFyTkH6UvYjk5ffbXY13XAGaIRRiPg==
+"@medusajs/types@^1.11.11", "@medusajs/types@^1.11.17", "@medusajs/types@^1.11.9":
+  version "1.11.17"
+  resolved "https://registry.yarnpkg.com/@medusajs/types/-/types-1.11.17.tgz#e78104bdb44fd8b957bd9aa88e2eb294299f1bfe"
+  integrity sha512-EKrG1aU0b6es1KlKhCSU2ptwJuHVB0EEiHd35IaIcDyx8ZVjIMscpDOhCSl5efAiRlr3I5kqWIbdSakDIF2Smw==
 
 "@medusajs/utils@^1.11.2", "@medusajs/utils@^1.11.4":
-  version "1.11.4"
-  resolved "https://registry.yarnpkg.com/@medusajs/utils/-/utils-1.11.4.tgz#783dcb9e97e3ef8b6f6c990430b768f2b34c674b"
-  integrity sha512-FSUsHUtK3XyANYNXJr1ZOHjoUigLxn+Jk/u0nQljuDxWRObZTwqkve2wG4K1nyibK0+nlCj7Yt8WjdhwwSabPg==
+  version "1.11.10"
+  resolved "https://registry.yarnpkg.com/@medusajs/utils/-/utils-1.11.10.tgz#1f3aefe767b4ea24d9b5a842e71e29e6b324d347"
+  integrity sha512-L0REq+CEArgr1b7P4lddSKHQGrx0IA7exTrHkEGT6b6h2GXT8MRXO4YfFi8PRBZkMu36zDSnfPBIGbjvnpGYsg==
   dependencies:
-    "@medusajs/types" "^1.11.11"
+    "@medusajs/types" "^1.11.17"
     "@mikro-orm/core" "5.9.7"
     "@mikro-orm/migrations" "5.9.7"
     "@mikro-orm/postgresql" "5.9.7"
     awilix "^8.0.1"
+    bignumber.js "^9.1.2"
     knex "2.4.2"
     ulid "^2.3.0"
 
@@ -2384,6 +2385,11 @@ basic-auth@~2.0.1:
   integrity sha512-NF+epuEdnUYVlGuhaxbbq+dvJttwLnGY+YixlXlME5KpQ5W3CnXA5cVTneY3SPbPDRkcjMbifrwmFYcClgOZeg==
   dependencies:
     safe-buffer "5.1.2"
+
+bignumber.js@^9.1.2:
+  version "9.1.2"
+  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.1.2.tgz#b7c4242259c008903b13707983b5f4bbd31eda0c"
+  integrity sha512-2/mKyZH9K85bzOEfhXDBFZTGd1CTs+5IHpeFQo9luiBG7hghdC851Pj2WAhb6E3R6b9tZj/XKhbg4fum+Kepug==
 
 binary-extensions@^2.0.0:
   version "2.2.0"
