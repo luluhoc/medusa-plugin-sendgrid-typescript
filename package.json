@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-sendgrid-typescript",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "SendGrid transactional emails typescript",
   "repository": {
     "type": "git",

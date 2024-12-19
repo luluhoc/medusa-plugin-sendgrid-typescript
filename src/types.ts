@@ -35,6 +35,8 @@ export interface PluginOptions {
   templates: Templates
   /** BCC email address to send to when an order is placed. */
   orderPlacedBcc?: EmailData|EmailData[]
+  /** BCC email address to send to when an order is canceled. */
+  noSendCountries?: string[]
   /** locale as key example de-DE */
   localization: {
     [key: string]: Templates

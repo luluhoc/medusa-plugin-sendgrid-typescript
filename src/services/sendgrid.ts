@@ -297,6 +297,17 @@ export class SendGridService extends AbstractNotificationService {
       attachmentGenerator
     )
 
+    const toBcc = () => {
+      if (this.options_.orderPlacedBcc && event === "order.placed") {
+
+        if (this.options_?.noSendCountries && this?.options_?.noSendCountries.includes(data.order?.shipping_address?.country_code)) {
+          return undefined
+        }
+        return this.options_.orderPlacedBcc
+      }
+      return undefined
+    }
+
     const sendOptions: SendGrid.MailDataRequired = {
       templateId: templateId,
       from: this.options_.from,
